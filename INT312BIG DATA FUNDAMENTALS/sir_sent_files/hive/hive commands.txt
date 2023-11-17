@@ -1,0 +1,333 @@
+create database db;
+
+create database if not exists db1;
+
+TO ADD COMMENT:
+create database if not exists db3 comment " this is sample database";
+
+show databases;
+
+show databases like 'd*';
+
+describe database db1;
+
+drop database db1;
+
+CREATE TABLE table-name  -- if table already exists it will fail or use IF NOT EXISTS
+column names
+COMMENT table-comment
+ROW FORMAT
+DELIMITED   --how columns are seperated that can be comma, space or any symbol
+FIELDS TERMINATED BY   --any symbol, default is '\001'
+LOCATION
+STORED AS   -- what type of file in which data stored i.e. text,binary file etc (optional)
+
+
+
+------------TABLE CREATION---------------------
+
+create table customers(id INT, fname STRING, lname STRING, city STRING)
+> ROW FORMAT DELIMITED
+> FIELDS TERMINATED BY '|'
+> STORED AS TEXTFILE;
+
+*********insert data*********
+
+LOAD DATA LOCAL INPATH'C:\Users\Dell\Desktop\customers.txt' into table customers;
+
+
+select * from customers;
+
+drop table customers;
+
+
+-----------------DDL COMMANDS--------------------
+
+******CREATE******
+create table employee(id int);
+
+load data local inpath 'C:\Users\Dell\Desktop\emp.txt' into table employee;
+
+select * from employee;
+
+*****ALTER****
+
+alter table employee rename to emp;   -- to rename table
+
+alter table emp add columns( name string);     --- to change schema
+
+***** DESCRIBE*******
+
+describe emp;
+
+****SHOW****
+
+show tables;	---show tables in db
+
+
+********TRUNCATE*******
+truncate table emp;    --- deletes the data from table
+
+
+select * from emp;
+
+*******DROP******
+
+drop table emp;		--- deletes the schema as well
+
+
+
+
+
+------------------Hive DML Commands -----------------------------
+
+*********SELECT***********
+
+select * from emp;
+
+
+********* WHERE *************
+
+select fname from customers where id=1;
+
+
+********* GROUP BY *************
+
+
+
+
+******** ORDER BY *************
+
+
+
+********** LOAD **************
+
+
+LOAD DATA LOCAL INPATH'C:\Users\Dell\Desktop\customers.txt' into table customers;
+
+
+--------------------- COMPLEX TYPE IN HIVE----------------
+
+
+
+************ARRAY************
+
+
+create table temperature(sno int,place string,mytemp array<double>)
+row format delimited
+fields terminated by '\t'
+collection items terminated by ',';
+
+load data local inpath C:\Users\Dell\Desktop\LPU 23241\INT 312\PPTS\hive\array.txt into table temperature;
+
+select * from table;
+
+
+select place,mytemp[0] from temperature;
+
+select place,mytemp[3] from temperature;
+
+
+
+--pavan
+
+create table arr1
+( id int,
+  name string,
+  blood_group string,
+  marks array<double>
+)
+row format delimited
+fields terminated by "|"
+collection items terminated  by ","
+
+
+
+1|pavan|a|9.0,8.8,9.4
+2|ram|b|4.4,5.3,5.8
+3|chandar|a+|1.4,5.3,2.6
+4|ayyappa|a|10.5,6.7,5.0
+
+load data local inpath "C:\Users\Pavan\OneDrive\Desktop\data.txt" into table arr1;
+
+--
+
+***************MAP*********************
+
+create table map(city string, gender string, collection map<int,int>)
+> row format delimited
+> fields terminated by '\t'
+> collection items terminated by ','
+> map keys terminated by ':';
+
+
+load data local inpath C:\Users\Dell\Desktop\LPU 23241\INT 312\PPTS\hive\mapset.txt into table map;
+
+describe map;
+
+select * from map;
+
+select collection[2022] from map where city='xy';
+
+select collection[2022] from map where city='xy' and gender='male;
+
+
+*************************STRUCT********************
+
+create table struct(name string, city string, info struct<place:string,temp:float>)
+> row format delimited
+> fields terminated by '\t'
+> collection items terminated by ',';
+
+load data local inpath C:\Users\Dell\Desktop\LPU 23241\INT 312\PPTS\hive\struct.txt into table struct;
+
+select * from struct;
+
+****elements of struct will be accessed using dot notation****
+
+select info.temp from struct;
+
+select info.place from struct;
+
+
+----------------------------------OPERATORS-----------------------------
+
+
+***********ARITHMATIC OPERATORS************
+
+Operators	Description
+A + B	This is used to add A and B.
+A - B	This is used to subtract B from A.
+A * B	This is used to multiply A and B.
+A / B	This is used to divide A and B and returns the quotient of the operands.
+A % B	This returns the remainder of A / B.
+A | B	This is used to determine the bitwise OR of A and B.
+A & B	This is used to determine the bitwise AND of A and B.
+A ^ B	This is used to determine the bitwise XOR of A and B.
+~A	This is used to determine the bitwise NOT of A.
+
+
+select cgpa+1.0 from students;
+
+******************Relational Operators******************
+
+Operator	Description
+A=B	It returns true if A equals B, otherwise false.
+A <> B, A !=B	It returns null if A or B is null; true if A is not equal to B, otherwise false.
+A<B	It returns null if A or B is null; true if A is less than B, otherwise false.
+A>B	It returns null if A or B is null; true if A is greater than B, otherwise false.
+A<=B	It returns null if A or B is null; true if A is less than or equal to B, otherwise false.
+A>=B	It returns null if A or B is null; true if A is greater than or equal to B, otherwise false.
+A IS NULL	It returns true if A evaluates to null, otherwise false.
+A IS NOT NULL	It returns false if A evaluates to null, otherwise true.
+
+
+select regno from students where cgpa>5.0;
+
+----------------------------FUNCTIONS----------------------
+
+Return Type	Operator	Description
+BIGINT	count(*)	It returns the count of the number of rows present in the file.
+DOUBLE	sum(col)	It returns the sum of values.
+DOUBLE	sum(DISTINCT col)	It returns the sum of distinct values.
+DOUBLE	avg(col)	It returns the average of values.
+DOUBLE	avg(DISTINCT col)	It returns the average of distinct values.
+DOUBLE	min(col)	It compares the values and returns the minimum one form it.
+DOUBLE	max(col)	It compares the values and returns the maximum one form it.
+
+
+select count(*) from students;
+select max(cgpa) from students;
+
+
+Return Type	Operator	Description
+INT	length(str)	It returns the length of the string.
+STRING	reverse(str)	It returns the string in reverse order.
+STRING	concat(str1, str2, ...)	It returns the concatenation of two or more strings.
+STRING	substr(str, start_index)	It returns the substring from the string based on the provided starting index.
+STRING	substr(str, int start, int length)	It returns the substring from the string based on the provided starting index and length.
+STRING	upper(str)	It returns the string in uppercase.
+STRING	lower(str)	It returns the string in lowercase.
+STRING	trim(str)	It returns the string by removing whitespaces from both the ends.
+STRING	ltrim(str)	It returns the string by removing whitespaces from left-hand side.
+TRING	rtrim(str)	It returns the string by removing whitespaces from right-hand side.
+
+select regno,upper(fname) from students;
+
+
+--------------------------GROUP BY---------------
+
+select section, avg(cgpa) from student group by section;
+
+---------------------- Having--------
+
+select section,avg(cgpa) from student group by section having cgpa>5.00;
+
+------------------ORDER By---------------
+
+select regno,name,cgpa from student order by cgpa;
+select regno,name,cgpa from student order by cgpa desc;
+
+----------------SORT BY-------------------
+
+select * from student sort by cgpa desc;
+
+
+------------Bucketing----------------------
+create table product1
+(
+pid int,
+pname string,
+price int,
+category string
+)
+clustered by (pid) into 3 		
+row format delimited
+fields terminated by ",";
+
+ create table details_bucketing(
+    id int,
+     name string,
+     patment_status string,
+     course string)
+     clustered by (id) into 3 buckets
+     row format delimited
+     fields terminated by ',';
+
+load data local inpath "D:\sem7\INT312BIG DATA FUNDAMENTALS\data\data1.txt" into table details_bucketing;
+
+--------------partitioned--------------
+create table dummy_details(
+id int,
+name string,
+payment_status string,
+course string
+)
+row format delimited
+fields terminated by ',';
+
+create table details(
+id int,
+name STRING,
+payment_status STRING
+)
+partitioned by (course STRING)
+row format delimited
+fields terminated by ',';
+
+
+load data local inpath "D:\sem7\INT312BIG DATA FUNDAMENTALS\data\data1.txt" into table dummy_details;
+insert into  details  partition(course) select * from dummy_details;
+
+
+
+---------------------views--------------------------------
+
+create view if not exists view_name as select--------
+
+
+-----------------------------joins--------------------------
+inner join 
+
+
+

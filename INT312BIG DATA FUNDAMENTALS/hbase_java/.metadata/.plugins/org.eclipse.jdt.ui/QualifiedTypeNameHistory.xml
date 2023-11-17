@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<qualifiedTypeNameHistroy>
+    <fullyQualifiedTypeName name="org.apache.hadoop.hbase.HTableDescriptor"/>
+    <fullyQualifiedTypeName name="org.apache.hadoop.hbase.util.Bytes.ByteArrayComparator"/>
+    <fullyQualifiedTypeName name="org.apache.hadoop.hbase.client.Get"/>
+    <fullyQualifiedTypeName name="org.apache.hadoop.conf.Configuration"/>
+    <fullyQualifiedTypeName name="org.apache.hadoop.hbase.HBaseConfiguration"/>
+    <fullyQualifiedTypeName name="java.io.IOException"/>
+    <fullyQualifiedTypeName name="org.apache.hadoop.hbase.client.ConnectionFactory"/>
+    <fullyQualifiedTypeName name="org.apache.hadoop.hbase.TableName"/>
+    <fullyQualifiedTypeName name="org.apache.hadoop.hbase.filter.BinaryComparator"/>
+    <fullyQualifiedTypeName name="org.apache.hadoop.hbase.filter.RowFilter"/>
+    <fullyQualifiedTypeName name="org.apache.hadoop.hbase.filter.CompareFilter"/>
+    <fullyQualifiedTypeName name="org.apache.hadoop.hbase.filter.CompareFilter.CompareOp"/>
+    <fullyQualifiedTypeName name="org.apache.hadoop.hbase.util.Bytes"/>
+    <fullyQualifiedTypeName name="org.apache.hadoop.hbase.client.Scan"/>
+    <fullyQualifiedTypeName name="org.apache.hadoop.hbase.client.ResultScanner"/>
+</qualifiedTypeNameHistroy>

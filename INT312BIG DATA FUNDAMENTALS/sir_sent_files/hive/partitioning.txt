@@ -1,0 +1,12 @@
+Haryana,Ambala,133001
+Haryana,Faridabad,121001
+Haryana,Gurgaon,122001
+Haryana,Hisar,125001
+Haryana,Jind,126101
+Punjab,Amritsar,143001
+Punjab,Barnala,148024
+Punjab,Bathinda,151001
+Punjab,Faridkot,151202
+Rajasthan,Ajmer,305001
+Rajasthan,Alwar,301001
+Rajasthan,Kota,324001

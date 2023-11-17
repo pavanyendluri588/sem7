@@ -1,0 +1,31 @@
+package hbase;
+
+import org.apache.hadoop.conf.Configuration;
+import org.apache.hadoop.hbase.HBaseConfiguration;
+import org.apache.hadoop.hbase.TableName;
+import org.apache.hadoop.hbase.client.*;
+import org.apache.hadoop.hbase.util.Bytes;
+
+import java.io.IOException;
+
+public class InsertData{
+	public static  void main(String[] args) throws IOException {
+		Configuration conf=HBaseConfiguration.create();
+		Connection connection = ConnectionFactory.createConnection(conf);
+
+		Table table = connection.getTable(TableName.valueOf("details"));
+
+		Put put = new Put(Bytes.toBytes("1"));
+		
+		put.addColumn(Bytes.toBytes("personal"), Bytes.toBytes("name"),Bytes.toBytes("pavan"));
+		put.addColumn(Bytes.toBytes("personal"), Bytes.toBytes("address"),Bytes.toBytes("vijayawada"));
+		put.addColumn(Bytes.toBytes("personal"), Bytes.toBytes("phone_no"),Bytes.toBytes("9110564858"));
+		put.addColumn(Bytes.toBytes("professional"), Bytes.toBytes("higher_education"),Bytes.toBytes("inter"));
+		put.addColumn(Bytes.toBytes("professional"), Bytes.toBytes("experience"),Bytes.toBytes("1"));
+		put.addColumn(Bytes.toBytes("professional"), Bytes.toBytes("reference"),Bytes.toBytes("no"));
+		
+		table.put(put);
+		System.out.println("updating data is completed");
+
+	}
+}

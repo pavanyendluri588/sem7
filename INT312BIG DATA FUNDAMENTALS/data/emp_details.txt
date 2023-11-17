@@ -1,0 +1,5 @@
+1,pavan.vijayawada,25000
+2,prudhvi,gunturu,30000
+3,rama,nellore,40000
+4,venkat,gopali,50000,
+5,pavan ram chandar,telangana,10000

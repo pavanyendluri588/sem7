@@ -1,0 +1,98 @@
+hdfs dfs -ls
+
+hdfs dfs -mkdir /a123
+
+hdfs dfs -ls /
+
+hdfs dfs -rmdir /a123
+
+
+hdfs dfs -mkdir /user/Dell/a1
+
+hdfs dfs -rmdir /user/Dell/a1
+
+hdfs dfs -put D:\a1.txt /user/Dell
+
+
+hdfs dfs -put C:\Users\Dell\Desktop\a1.txt /user/Dell
+
+hdfs dfs -copyFromLocal C:\Users\Dell\Desktop\a2.txt /user/Dell
+
+
+hdfs dfs -cat /user/Dell/a1.txt  ( to read content of file)
+
+hdfs dfs -rm /user/Dell/a3.txt
+
+hdfs dfs -moveFromLocal C:\Users\Dell\Desktop\a3.txt /user/Dell
+
+
+hadoop fs -cat /user/Dell/a3.txt
+
+hadoop fs -cp /user/Dell/a3.txt /user
+
+hadoop fs -mv /user/Dell/a1.txt /user
+
+hadoop fs -du /user ( for size of each file in directory)
+
+hadoop fs -dus /user ( for size of entire directory)
+
+
+
+
+-----------------************************-------------------
+hadoop fs -touchz /user/Dell/new.txt
+
+ls commands:
+
+1) hadoop fs -ls -d
+2) hadoop fs -ls -h
+3) hadoop fs -ls -R
+
+
+( d- list directories as plain files, h-> format size in human readable format i.e. bytes
+  R-> to list recursively)
+
+hadoop fs -get /user/Dell/a2.txt C:\Users\Dell\Desktop( hdfs to local)
+
+
+sbin>hadoop fs -appendToFile C:\Users\Dell\Desktop\append.txt /user/Dell/a2.txt
+
+hadoop fs -tail /user/Dell/a2.txt  ( last 1 kb of file)
+
+hadoop fs -stat /user/Dell/a2.txt   (stats of file)
+
+rm command:
+
+–rm: Only files can be removed but directories can’t be deleted by this command
+–rm r: Recursively remove directories and files
+–skipTrash: used to bypass the trash then it immediately deletes the source
+–f: mention that if there is no file existing
+–rR: used to recursively delete directories
+
+1) hadoop fs -rm -r /user/test/sample.txt
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -1,0 +1,62 @@
+import UIKit
+
+/*struct Person
+{
+var name:String
+init(n:String) {
+name=n
+}
+mutating func setName(n:String)
+{
+name=n
+}
+func show()->String
+{
+return name
+}
+}
+
+var p=Person(n:"nisha")
+p.setName(n: "nishaa")
+print(p.show())
+*/
+class Person
+{
+var i:Int?
+var name=""
+var age:Int
+init() {
+age=0
+}
+init(n:String,a:Int)
+{
+name=n
+age=a
+print("hello")
+}
+public func show()
+{
+print(name,age)
+}
+}
+
+//var p1=Person(n:"Neha",a:20)
+//var p=Person()
+//p1.show()
+
+class Student:Person
+{
+var reg:Int
+init(r:Int,n:String,a:Int)
+{
+reg=r
+super.init(n:n,a:a)
+}
+override func show() {
+print(reg,age,name)
+
+}
+
+}
+var s=Student(r:11111,n:"abc",a:20)
+s.show()

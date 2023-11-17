@@ -1,0 +1,108 @@
+This command is used to test an HDFS file’s existence of zero length of the file or whether if it is a directory or not.
+
+options:
+
+–d	used to check whether if it is a directory or not, returns 0 if it is a directory
+–e 	used to check whether they exist or not, returns 0 if the exists
+–f 	used to check whether there is a file or not, returns 0 if the file exists
+–s	used to check whether the file size is greater than 0 bytes or not, returns 0 if the size is greater than 0 bytes
+–z	used to check whether the file size is zero bytes or not. If the file size is zero bytes, then returns 0 or else returns 1.
+Example:
+
+hadoop fs -test -[defsz] /user/test/test.txt
+
+echo $? --- to get the result of test command    (linux)
+
+
+
+
+
+
+hadoop fs -getmerge -nl /user/Dell/f1.txt /user/Dell/f2.txt ~/Dektop/mergefile.txt    (linux)
+
+
+hadoop fs -checksum /user/Dell/f1.txt
+
+
+
+hadoop fsck - /   ( to check status of file system if healty or not)
+
+
+to check how many files in one directory and size occupied:
+
+hadoop fs -ls /user/Dell/		(this is location)
+
+hadoop fs -count /user/Dell/		( this will give count of file dir and size)
+
+
+hadoop fs -rm /user/Dell/a1.txt   			( deletes a file)
+
+
+How to change groupname of file
+hdfs dfs -ls /user/Dell				--- to check the groupname of file 
+
+
+hadoop fs -chgrp sandeep /user/Dell/a2.txt    		--- will update group to given name
+
+
+STAT COMMAND: (linux)
+
+hadoop fs -stat %b /user/Dell/a2.txt		for size in bits
+hadoop fs -stat %g /user/Dell/a2.txt		for group of the file
+hadoop fs -stat %r /user/Dell/a2.txt		for replication factor of file
+hadoop fs -stat %u /user/Dell/a2.txt		will give user of file
+hadoop fs -stat %y /user/Dell/a2.txt		will give last modified timestamp for file
+
+
+
+Usage command:  
+
+helps for syntax
+
+hadoop fs -usage mkdir				to know syntax of mkdir
+
+
+help command:
+
+to give syntax and all information
+
+hadoop fs -help cat	
+
+
+
+hadoop fs -head /user/Dell/hadoop.txt		( first kb of file)
+hadoop fs -tail /user/Dell/hadoop.txt		(last 1kb of file)
+
+
+hadoop fs -expunge		( to clean trash files)
+
+
+hadoop fs -ls /user/Dell/hadoop.txt			check owner & group of file (Dell & supergroup)
+
+
+hadoop fs -chown sandeep:sandeep /user/Dell/hadoop.txt    to change owner & group of file
+
+change permission:  ( user group other i.e. ugo 10 character) 
+hadoop fs -chmod 777 /user/Dell/hadoop.txt
+
+
+Change or setting up replication factor:
+
+hadoop fs -setrep -w 3 /user/Dell/hadoop.txt			( w means wait till replication complete)
+
+
+hadoop fs -truncate -w 100 /user/Dell/hadoop.txt ( 100 size will be left)  ( to reduce the size of log file i.e replicated data in log file will be deleted so unwanted data will be deleted)
+
+
+SET ATTRIBUTE SOME EXTRA:
+user trusted system security
+hadoop fs -setfattr -n 'user.sk' -v thisisdummyfile /user/Dell/hadoop.txt
+
+GET ATTRIBUTE
+hadoop fs -getfattr -d /user/Dell/hadoop.txt		d-scanning
+
+
+
+
+hdfs dfsadmin -safemode get
+hdfs dfsadmin -safemode leave

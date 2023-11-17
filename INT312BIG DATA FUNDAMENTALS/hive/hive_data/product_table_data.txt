@@ -1,0 +1,6 @@
+1,ice_cream,50,food
+2,bucket,100,furniture
+3,cococola,20,drink
+4,chips,20,food
+5,toothbresh,10,need
+6,bread,50,food

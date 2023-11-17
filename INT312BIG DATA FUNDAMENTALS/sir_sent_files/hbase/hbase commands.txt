@@ -1,0 +1,371 @@
+Commands:
+
+status
+
+status ‘simple’
+
+status ‘detailed’
+
+version
+
+whoami 
+
+table_help
+
+
+create ‘mytable’, ‘colfam’
+
+list
+
+
+describe ‘mytable’
+
+disable ‘mytable’
+
+enable ‘mytable’
+disable ‘mytable’
+
+
+drop ‘mytable’
+
+table_help
+
+show_filters
+
+create ‘test_table’,’colfam1’
+
+alter ‘test_table’,{NAME => ‘colfam2’}
+
+alter ‘test_table’,{NAME => ‘colfam2’, METHOD => ‘delete’}
+
+describe 'test_table'
+
+alter ‘test_table’, {NAME => ‘colfam1’, VERSIONS => 2}
+
+alter ‘test_table’, READONLY
+
+alter 'test_table',{NAME => 'colfam2'},{NAME => 'colfam3'}
+
+alter ‘test_table’, NAME =>‘colfam4’, VERSIONS => 5
+
+alter ‘test_table’, MAX_FILESIZE => ‘1234141789’
+
+alter_status ‘test_table’
+
+create_namespace ‘ns1’
+
+create ‘ns1:rt12’, ‘cf1’
+
+list ‘ns1:rt12’
+
+describe_namespace ‘ns1’
+
+list_namespace
+
+_____
+
+create ‘f’, ‘f1’
+
+put  ‘f’, 1 , ‘f1:name’, ‘Sandeep’
+
+put  ‘f’, 1 , ‘f1:city’, ‘jal’
+
+put  ‘f’, 1 , ‘f1:id’, ‘10’
+
+put ‘f’, 2 , ‘f1:name’, ‘XYZ’
+
+put ‘f’, 2 , ‘f1:city’, ‘Delhi’
+
+put ‘f’, 2 , ‘f1:id’, ‘11’
+
+
+
+
+scan ‘f’
+
+get ‘f’ , ‘1’
+
+get ‘f’ , ‘1’, {COLUMN => ‘f1:name’}
+
+get ‘f’ , ‘1’, {COLUMN => [‘f1:name’, ‘f1:id’]}
+
+
+
+
+delete 'mytable', 1, 'colfam1:Creator'		// to delete a specific cell
+
+deleteall 'mytable','1'				// to delete all the cells
+
+count 'mytable'					// to count the no. of rows 
+
+
+
+***********************PROGRAM-1 : CREATE A HBASE TABLE USING JAVA API*****************
+
+STEPS:
+3 steps i.e. 
+1) specify the table name and column families
+2) connect to HBase
+3) create the table
+
+
+USE HTableDescriptor Class to specify the tablename and column families
+
+USE Connection Class to connect to database
+
+USE HBaseAdmin Class to create table
+
+USE addFamily Method to add col families
+
+Specify col families with HColumnDescriptor
+
+Configuration object created with HBaseConfiguration
+
+Connection object can provide an instance of HBaseAdmin
+
+HbaseAdmin Class contain all methods for all operations (create, delete, table)
+
+
+-------------PROGRAM----------
+
+package hBase;
+
+import org.apache.hadoop.conf.Configuration;
+import org.apache.hadoop.hbase.HBaseConfiguration;
+import org.apache.hadoop.hbase.HColumnDescriptor;
+import org.apache.hadoop.hbase.HTableDescriptor;
+import org.apache.hadoop.hbase.TableName;
+import org.apache.hadoop.hbase.client.*;
+
+import java.io.IOException;
+
+public class createTable{
+	public static  void main(String[] args) throws IOException {
+		Configuration conf=HBaseConfiguration.create();
+		Connection connection = ConnectionFactory.createConnection(conf);
+
+		Admin admin=connection.getAdmin();
+
+		HTableDescriptor tableName= new HTableDescriptor(TableName.valueOf("mytable"));
+		
+		tableName.addFamily(new HColumnDescriptor("colfam1"));
+
+		tableName.addFamily(new HColumnDescriptor("colfam2"));
+
+		if (!admin.tableExists(tableName.getTableName())){
+			System.out.print("Creating Table.");
+			admin.createTable(tableName);
+			System.out.println("Done");
+		}
+	}
+}
+
+
+******************************PROGRAM 2:  INSERT COLUMN FOR A SINGLE ROW ID **********************************************
+
+put 'mytable','1','colfam1:Channel','ABC'
+put 'mytable','1','colfam1:Creator','sam'
+put 'mytable','1','colfam1:country','USA'
+
+STEPS:
+
+1) specify the row id, column and value  //put class
+2) connect to hbase  //connection class
+3) get a table object to represent our table   // connection object can provide an instance of HTABLE
+4) Insert the row.
+
+
+
+USE PUT class to specify data that will be inserted/updated.
+
+PUT is used to insert/update a specific row id
+
+All data that is passed to HBASE must be in the form of BYTE ARRAYS
+
+Row id, column family names, column names, values all must be in  the form of byte arrays
+
+BYTE CLASS is a helper class provided by HBASE to convert java primitive to BYTE ARRAYS
+
+USE ADD COLUMN to specify column family, column and value
+
+IN SHELL one can insert 1 cell with 1 PUT.
+
+
+------------PROGRAM--------------
+
+
+
+
+package hbase;
+
+import org.apache.hadoop.conf.Configuration;
+import org.apache.hadoop.hbase.HBaseConfiguration;
+import org.apache.hadoop.hbase.TableName;
+import org.apache.hadoop.hbase.client.*;
+import org.apache.hadoop.hbase.util.Bytes;
+
+import java.io.IOException;
+
+public class tab2{
+	public static  void main(String[] args) throws IOException {
+		Configuration conf=HBaseConfiguration.create();
+		Connection connection = ConnectionFactory.createConnection(conf);
+
+		Table table = connection.getTable(TableName.valueOf("mytable"));
+
+		Put put = new Put(Bytes.toBytes("1"));
+		
+		put.addColumn(Bytes.toBytes("colfam1"), Bytes.toBytes("Channel"),Bytes.toBytes("ABC"));
+		put.addColumn(Bytes.toBytes("colfam1"), Bytes.toBytes("Creator"),Bytes.toBytes("Sam"));
+		put.addColumn(Bytes.toBytes("colfam1"), Bytes.toBytes("Country"),Bytes.toBytes("USA"));
+		
+		table.put(put);
+
+	}
+}
+
+
+
+***************************PROGRAM 3 : RETRIEVING DATA FOR A SINGLE ROW ID USING GET() *********************************
+
+STEPS:
+
+STEP 1: specify the row id and column   => get class help in specify
+
+STEP 2: Connect to hbase and get a table  object  => Connection + HTable
+
+STEP 3: Fetch the results
+
+NOTE: 
+
+get method returns a result object
+
+result is like a map ( COLUMN FAMILIES AND COLUMNS AS KEYS AND VALUES WE WANT TO RETRIEVE AS VALUES)
+
+getvalue method of result object acts as lookup in the map
+
+Data in the result object is in the form of byte array
+
+Bytes helper class has method to convert byte array to string
+
+
+PROGRAM:
+
+
+
+package hBase;
+
+import org.apache.hadoop.conf.Configuration;
+import org.apache.hadoop.hbase.HBaseConfiguration;
+import org.apache.hadoop.hbase.TableName;
+import org.apache.hadoop.hbase.client.*;
+import org.apache.hadoop.hbase.util.Bytes;
+
+import java.io.IOException;
+
+
+public class vg{
+
+	public static  void main(String[] args) throws IOException {
+		Configuration conf=HBaseConfiguration.create();
+		Connection connection = ConnectionFactory.createConnection(conf);
+
+		Table table = connection.getTable(TableName.valueOf("mytable"));
+
+		// Instantiating Get Class
+		Get g=new Get(Bytes.toBytes("1"));
+
+		//Reading the data
+		Result result=table.get(g);
+
+		//Reading values from Result class object 
+		byte [] value=result.getValue(Bytes.toBytes("colfam1"),Bytes.toBytes("Channel"));
+		byte [] value=result.getValue(Bytes.toBytes("colfam1"),Bytes.toBytes("Creator"));
+
+		//printing the values
+
+		String ch=Bytes.toString(value);
+		String ch1=Bytes.toString(value1);
+
+
+		System.out.println("channel: " + ch + " creator: " + ch1);
+	}
+}
+
+
+************************PROGRAM 4: DELETE OPERATION IN HBASE TABLE USING JAVA API****************************
+
+STEPS:
+
+delete 'table',1,'cf:col'
+
+STEP 1: Specify the rowid and col
+
+STEP 2: Connnect to HBase and get a table object
+
+STEP 3: Delete the value
+
+i.e. in java 
+
+Delete delete = new Delete(Bytes.toBytes("1"));
+
+Use the delete class to specify the row,column that will be deleted.
+
+Row Id is specified using BYTE ARRAY.
+
+Use addcolumn to specify columns whose values should be deleted.
+
+delete.addcolumn(Bytes.toBytes("cf"), Bytes.toBytes("col"));
+
+We can specify any number of columns for that specific rowid.
+
+Use the delete method to delete the value i.e.
+
+		table.delete(delete);
+
+
+
+--------------PROGRAM----------
+
+
+package hBase;
+
+import org.apache.hadoop.conf.Configuration;
+import org.apache.hadoop.hbase.HBaseConfiguration;
+import org.apache.hadoop.hbase.TableName;
+import org.apache.hadoop.hbase.client.*;
+import org.apache.hadoop.hbase.util.Bytes;
+
+import java.io.IOException;
+
+
+public class del{
+
+	public static  void main(String[] args) throws IOException {
+		Configuration conf=HBaseConfiguration.create();
+		Connection connection = ConnectionFactory.createConnection(conf);
+
+		Table table = connection.getTable(TableName.valueOf("mytable"));
+
+		Delete delete=new Delete(Bytes.toBytes("1"));
+
+		delete.addColumn(Bytes.toBytes("colfam1"), Bytes.toBytes("Channel"));
+
+		table.delete(delete);
+
+		table.close();
+
+	}
+}
+
+
+
+
+
+
+
+
+
+
+
+

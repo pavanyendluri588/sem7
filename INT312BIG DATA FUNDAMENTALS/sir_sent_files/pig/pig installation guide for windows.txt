@@ -1,0 +1,44 @@
+APACHE PIG INSTALLATION ON WINDOWS:
+
+Step 1: Download pig-0.17.0.tar.gz (220 MB) from the given link i.e.
+
+https://dlcdn.apache.org/pig/pig-0.17.0/
+
+
+Step 2: create a folder 'pig' in c drive and extract the downloaded pig file in this folder.
+after extraction folder PIG HOME PATH will be looking like:
+
+C:\pig\pig-0.17.0
+
+Step 3: Now edit system environment variables
+
+Create a new system variable i.e.
+
+Variable Name : PIG_HOME
+Value : C:\pig\pig-0.17.0
+
+Also edit the 'path' variable and add %PIG_HOME%\bin
+
+Step 4: edit 'pig.cmd' file from bin folder of pig.....
+
+
+You will get the below mentioned line in above file around 40th line.
+
+set HADOOP_BIN_PATH=%HADOOP_HOME%\bin
+
+Find the above line and replace \bin to \libexec in the above line and save the file.
+
+After modifying this above line will be looking like this..
+
+set HADOOP_BIN_PATH=%HADOOP_HOME%\libexec
+
+PIG installation completed.
+
+------------- How to start pig------------
+
+Open cmd as admin ( No need to run hadoop in background for this)
+
+pig -x local
+
+and this will open pig shell in the form of 'grunt>'
+

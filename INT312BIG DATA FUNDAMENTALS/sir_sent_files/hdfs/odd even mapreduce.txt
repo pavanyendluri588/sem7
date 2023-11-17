@@ -1,0 +1,168 @@
+*********************SUM OF ODD EVEN NUMBER FOR MAPREDUCE *******************
+.
+
+
+
+--------DRIVER CLASS:
+
+package oddeven;
+
+import org.apache.hadoop.conf.Configured;
+import org.apache.hadoop.fs.Path;
+import org.apache.hadoop.io.IntWritable;
+import org.apache.hadoop.io.Text;
+import org.apache.hadoop.mapred.FileInputFormat;
+import org.apache.hadoop.mapred.FileOutputFormat;
+import org.apache.hadoop.mapred.JobClient;
+import org.apache.hadoop.mapred.JobConf;
+import org.apache.hadoop.util.Tool;
+import org.apache.hadoop.util.ToolRunner;
+ 
+public class EODriver extends Configured implements Tool {
+ 
+    @Override
+    public int run(String[] args) throws Exception
+    {
+        if (args.length < 2) 
+        {
+            System.out.println("Please enter valid arguments");
+            return -1;
+        }
+ 
+        JobConf conf = new JobConf(EODriver.class);
+        FileInputFormat.setInputPaths(conf, new Path(args[0]));
+        FileOutputFormat.setOutputPath(conf, new Path(args[1]));
+        conf.setMapperClass(EOMapper.class);
+        conf.setReducerClass(EOReducer.class);
+        conf.setMapOutputKeyClass(Text.class);
+        conf.setMapOutputValueClass(IntWritable.class);
+        conf.setOutputKeyClass(Text.class);
+        conf.setOutputValueClass(IntWritable.class);
+ 
+        JobClient.runJob(conf);
+        return 0;
+    }
+ 
+    // Main Method
+    public static void main(String args[]) throws Exception
+    {
+        int exitcode = ToolRunner.run(new EODriver(), args);
+        System.out.println(exitcode);
+    }
+}
+
+
+
+
+-----------MAPPER CLASS:
+
+
+
+package oddeven;
+
+import java.io.IOException;
+import org.apache.hadoop.io.IntWritable;
+import org.apache.hadoop.io.LongWritable;
+import org.apache.hadoop.io.Text;
+import org.apache.hadoop.mapred.MapReduceBase;
+import org.apache.hadoop.mapred.Mapper;
+import org.apache.hadoop.mapred.OutputCollector;
+import org.apache.hadoop.mapred.Reporter;
+ 
+public class EOMapper extends MapReduceBase implements Mapper<LongWritable,
+                                                 Text, Text, IntWritable> {
+ 
+    @Override
+    // Map function
+    public void map(LongWritable key, Text value, OutputCollector<Text, 
+                                     IntWritable> output, Reporter rep)
+ 
+    throws IOException
+    {
+        // Splitting the line into spaces
+        String data[] = value.toString().split(" ");
+ 
+        for (String num : data) 
+        {
+ 
+            int number = Integer.parseInt(num);
+ 
+            if (number % 2 == 1) 
+            {
+                // For Odd Numbers
+                output.collect(new Text("ODD"), new IntWritable(number));
+            }
+ 
+            else
+            {
+                // For Even Numbers
+                output.collect(new Text("EVEN"), 
+                       new IntWritable(number));
+            }
+        }
+    }
+}
+
+
+
+
+
+
+
+--------------------- REDUCER CLASS
+
+
+package oddeven;
+
+import java.io.IOException;
+import java.util.Iterator;
+import org.apache.hadoop.io.IntWritable;
+import org.apache.hadoop.io.Text;
+import org.apache.hadoop.mapred.MapReduceBase;
+import org.apache.hadoop.mapred.OutputCollector;
+import org.apache.hadoop.mapred.Reducer;
+import org.apache.hadoop.mapred.Reporter;
+ 
+public class EOReducer extends MapReduceBase implements Reducer<Text,
+                                   IntWritable, Text, IntWritable> {
+ 
+    @Override
+    // Reduce Function
+    public void reduce(Text key, Iterator<IntWritable> value,
+     OutputCollector<Text, IntWritable> output, Reporter rep)
+ 
+    throws IOException
+    {
+ 
+        // For finding sum and count of even and odd
+        // you don't have to take different variables
+        int sum = 0, count = 0;
+        if (key.equals("ODD")) 
+        {
+            while (value.hasNext())
+            {
+                IntWritable i = value.next();
+ 
+                sum += i.get();
+                count++;// Finding sum and count of ODD Numbers
+                
+            }
+        }
+ 
+        else
+        {
+            while (value.hasNext()) 
+            {
+                IntWritable i = value.next();
+ 
+                // Finding sum and count of EVEN Numbers
+                sum += i.get();
+                count++;
+            }
+        }
+ 
+        // First sum then count is printed
+        output.collect(key, new IntWritable(sum));
+        output.collect(key, new IntWritable(count));
+    }
+}

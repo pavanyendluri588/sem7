@@ -1,0 +1,52 @@
+segment.selectedSegmentIndex
+segment.titleForSegment(at: indexofsegment)
+segment.
+
+switch segment.selectedSegmentIndex
+case 0:
+
+case 1:
+
+case 2:
+
+case 3:
+
+default:
+
+
+
+background.alpha = Float(slider value)
+
+
+switch
+isOn
+isOff
+onTintColor-color is when switch is on 
+tintColor-color when switch is off 
+thumbTintColor  circular head of switch color 
+isEnabled-make switch is working or not 
+
+slider 
+maximumvalue
+minimumvalue
+roundf(slider.value)
+
+
+
+uiimage
+
+#assigning image 
+image = UIImage(named:"imagenamewithextenction")
+vat imageattay:[UIImage] = [UIImage(named:"imagename"),
+                            UIImage(named:"imagename"),
+                            UIImage(named:"imagename"),]
+
+image.animationImages = arr
+image.animationDuration = 5
+image.startAnimating()
+image.stopAnimating()
+image.AnimationRepeatCount
+
+
+
+

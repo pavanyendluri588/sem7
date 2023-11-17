@@ -1,0 +1,80 @@
+Installing Apache Hive on Windows 11:
+
+1. installing hadoop
+2. installing apache derby
+3. installing hive
+4. setting environment variables
+
+
+
+*********************** Step by step installation********************
+
+2. Installing Apache Derby
+
+Install Apache Derby 10.14.2.0 from link 
+
+https://db.apache.org/derby/derby_downloads.html#For+Java+8+and+Higher
+
+3. download apache hive binaries
+
+https://downloads.apache.org/hive/hive-3.1.2/
+
+create two folders in c drive named as hive and derby and then extract the .tar files of hive and derby in these respective folders.
+
+4. Setting environment variables
+
+
+HIVE_HOME -> 
+DERBY_HOME -> 
+
+HIVE_LIB -> %HIVE_HOME%\lib
+HIVE_BIN -> %HIVE_HOME%\bin
+HADOOP_USER_CLASSPATH_FIRST: "true"
+
+%DERBY_HOME%\bin
+%HIVE_BIN%
+
+
+5. 
+
+5.1. Copy Derby libraries
+
+we should go to the Derby libraries directory (db-derby-10.14.2.0\lib) and copy all *.jar files. 
+Then, we should paste them within the Hive libraries directory.
+
+5.2. Configuring hive-site.xml and Hive’s Bin folder
+
+Refer following link to download the file. Also download the guava file. 
+Put hive-site.xml file to hive’s conf location and replace hive’s current guava file with this one in lib location. 
+Also download the bin folder from link and replace the existing hive’s bin folder as shown in video.
+
+https://1drv.ms/f/s!ArSg3Xpur4Grmw0SDqW0g44T7HYU?e=wDsoBn
+
+
+6. Starting Hadoop Services
+
+Now, we will open PowerShell, and navigate to “%HADOOP_HOME%\sbin” directory. 
+
+Then we will run the following command to start the Hadoop nodes:
+
+.\start-dfs.cmd
+
+Next, we must start the Hadoop Yarn service using the following command:
+
+./start-yarn.cmd
+
+7. Derby Network Server : Run the following command in separate window to open Derby
+
+startNetworkServer -h 0.0.0.0
+
+
+8. Starting Apache Hive
+
+Go to Apache Hive’s bin location with cd command and run the following command:
+
+ hive --service  schematool -dbType derby -initSchema
+
+
+9. Open Hive shell by typing :
+
+hive
